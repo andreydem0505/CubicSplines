@@ -4,6 +4,9 @@ import java.util.List;
 
 public class Solver {
     public static Spline[] getSplines(List<Point> points) {
+        if (points.size() < 2)
+            return new Spline[0];
+
         double[] h = new double[points.size() - 1];
         for (int i = 0; i < h.length; i++) {
             h[i] = points.get(i + 1).getX() - points.get(i).getX();
@@ -23,9 +26,7 @@ public class Solver {
         double[] c = new double[h.length + 1];
         c[0] = 0;
         c[h.length] = 0;
-        for (int i = 1; i < h.length; i++) {
-            c[i] = solution[i - 1];
-        }
+        System.arraycopy(solution, 0, c, 1, h.length - 1);
         double[] b = new double[h.length];
         double[] d = new double[h.length];
         for (int i = 0; i < h.length; i++) {

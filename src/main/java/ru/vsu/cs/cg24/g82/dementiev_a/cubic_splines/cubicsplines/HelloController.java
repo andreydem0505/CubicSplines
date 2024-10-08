@@ -27,18 +27,17 @@ public class HelloController {
         points = new ArrayList<>();
 
         canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-            painter.putPixel((int) e.getX(), (int) e.getY());
-        });
+            points.add(new Point((int) e.getX(), (int) e.getY()));
+            canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        points.add(new Point(20, 30));
-        points.add(new Point(40, 66));
-        points.add(new Point(100, 14));
-        points.add(new Point(200, 200));
-        Spline[] splines = Solver.getSplines(points);
-        for (int i = 0; i < points.size() - 1; i++) {
-            for (int x = points.get(i).getX(); x < points.get(i + 1).getX(); x++) {
-                painter.putPixel(x, (int) splines[i].calculate(x));
+            Spline[] splines = Solver.getSplines(points);
+            for (int i = 0; i < points.size() - 1; i++) {
+                int minX = Math.min(points.get(i).getX(), points.get(i + 1).getX());
+                int maxX = Math.max(points.get(i).getX(), points.get(i + 1).getX());
+                for (double x = minX; x < maxX; x += 0.05) {
+                    painter.putPixel((int) Math.round(x), (int) splines[i].calculate(x));
+                }
             }
-        }
+        });
     }
 }

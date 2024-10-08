@@ -15,7 +15,17 @@ public class Spline {
         this.x0 = x0;
     }
 
-    public double calculate(int x) {
+    public double calculate(double x) {
         return a + b * (x - x0) + c * (x - x0) * (x - x0) + d * (x - x0) * (x - x0) * (x - x0);
+    }
+
+    @Override
+    public String toString() {
+        return "Spline{" +
+                "a=" + a +
+                ", b=" + b +
+                ", c=" + c +
+                ", d=" + d +
+                '}';
     }
 }
