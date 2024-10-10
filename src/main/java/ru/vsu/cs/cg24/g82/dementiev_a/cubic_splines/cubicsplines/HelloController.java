@@ -7,6 +7,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.input.MouseEvent;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -39,7 +40,12 @@ public class HelloController {
             }
             if (dragged != null) return;
 
+            for (Point point : points) {
+                if (point.getX() == e.getX()) return;
+            }
+
             points.add(new Point((int) e.getX(), (int) e.getY()));
+            points.sort(Comparator.comparing(Point::getX));
             repaint();
         });
 
@@ -49,8 +55,14 @@ public class HelloController {
 
         canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
             if (dragged == null) return;
+            for (Point point : points) {
+                if (point.getX() + 3 >= e.getX() && point.getX() - 3 <= e.getX()) {
+                    return;
+                }
+            }
             dragged.setX((int) e.getX());
             dragged.setY((int) e.getY());
+            points.sort(Comparator.comparing(Point::getX));
             repaint();
         });
     }
