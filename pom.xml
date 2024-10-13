@@ -65,7 +65,7 @@
             <!-- Default configuration for running with: mvn clean javafx:run -->
             <id>default-cli</id>
             <configuration>
-              <mainClass>ru.vsu.cs.cg24.g82.dementiev_a.cubic_splines.cubicsplines/ru.vsu.cs.cg24.g82.dementiev_a.cubic_splines.cubicsplines.HelloApplication</mainClass>
+              <mainClass>ru.vsu.cs.cg24.g82.dementiev_a.cubic_splines.cubicsplines/ru.vsu.cs.cg24.g82.dementiev_a.cubic_splines.cubicsplines.Application</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>

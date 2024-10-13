@@ -2,7 +2,7 @@ package ru.vsu.cs.cg24.g82.dementiev_a.cubic_splines.cubicsplines;
 
 
 public class Solver {
-    public static Spline[] getSplines(int[] x, int[] y) {
+    public static Spline[] getSplines(int[] x, int[] f) {
         if (x.length < 2)
             return new Spline[0];
 
@@ -17,7 +17,7 @@ public class Solver {
                     2 * (h[i] + h[i + 1]),
                     h[i + 1],
                     h[i],
-                    3 * ((y[i + 2] - y[i + 1]) / h[i + 1] - (y[i + 1] - y[i]) / h[i])
+                    3 * ((f[i + 2] - f[i + 1]) / h[i + 1] - (f[i + 1] - f[i]) / h[i])
             );
         }
         double[] solution = TridiagonalMatrix.solve(rows);
@@ -29,13 +29,13 @@ public class Solver {
         double[] b = new double[h.length];
         double[] d = new double[h.length];
         for (int i = 0; i < h.length; i++) {
-            b[i] = (y[i + 1] - y[i]) / h[i] - h[i] / 3 * (c[i + 1] + 2 * c[i]);
+            b[i] = (f[i + 1] - f[i]) / h[i] - h[i] / 3 * (c[i + 1] + 2 * c[i]);
             d[i] = (c[i + 1] - c[i]) / (3 * h[i]);
         }
 
         Spline[] splines = new Spline[h.length];
         for (int i = 0; i < splines.length; i++) {
-            splines[i] = new Spline(y[i], b[i], c[i], d[i], x[i]);
+            splines[i] = new Spline(f[i], b[i], c[i], d[i], x[i]);
         }
 
         return splines;

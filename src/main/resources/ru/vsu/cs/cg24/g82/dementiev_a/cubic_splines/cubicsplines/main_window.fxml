@@ -4,6 +4,6 @@
 <?import javafx.scene.canvas.Canvas?>
 
 <AnchorPane fx:id="anchorPane" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="ru.vsu.cs.cg24.g82.dementiev_a.cubic_splines.cubicsplines.HelloController">
+            fx:controller="ru.vsu.cs.cg24.g82.dementiev_a.cubic_splines.cubicsplines.Controller">
   <Canvas fx:id="canvas" width="1000" height="700" AnchorPane.topAnchor="30.0"/>
 </AnchorPane>
