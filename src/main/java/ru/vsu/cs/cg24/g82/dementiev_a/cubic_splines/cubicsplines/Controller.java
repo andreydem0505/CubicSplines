@@ -85,9 +85,7 @@ public class Controller {
 
         Spline[] splines = Solver.getSplines(x, y);
         for (int i = 0; i < points.size() - 1; i++) {
-            int minX = Math.min(x[i], x[i + 1]);
-            int maxX = Math.max(x[i], x[i + 1]);
-            for (double k = minX; k < maxX; k += 0.05) {
+            for (double k = x[i]; k < x[i + 1]; k += 0.05) {
                 painter.putPixel((int) Math.round(k), (int) splines[i].calculate(k));
             }
         }
