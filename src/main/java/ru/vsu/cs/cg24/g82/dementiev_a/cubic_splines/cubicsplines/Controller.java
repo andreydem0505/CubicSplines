@@ -6,7 +6,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.input.MouseEvent;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 
@@ -19,7 +18,6 @@ public class Controller {
     private Painter painter;
     private List<Point> points;
     private final int POINT_RADIUS = 3;
-    private final int X_SPAN = 3;
     private Point dragged = null;
 
     @FXML
@@ -45,12 +43,6 @@ public class Controller {
             }
             if (dragged != null) return;
 
-            // Не можем ставить точку слишком близко по координате Х
-            for (Point point : points) {
-                if (point.getX() + X_SPAN >= e.getX() && point.getX() - X_SPAN <= e.getX())
-                    return;
-            }
-
             points.add(new Point((int) e.getX(), (int) e.getY()));
             repaint();
         });
@@ -59,11 +51,6 @@ public class Controller {
 
         canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
             if (dragged == null) return;
-            // Не можем перемещать точку слишком близко по координате Х к другой точке
-            for (Point point : points) {
-                if (point != dragged && point.getX() + X_SPAN >= e.getX() && point.getX() - X_SPAN <= e.getX())
-                    return;
-            }
 
             dragged.setX((int) e.getX());
             dragged.setY((int) e.getY());
@@ -72,7 +59,6 @@ public class Controller {
     }
 
     private void repaint() {
-        points.sort(Comparator.comparing(Point::getX));
         painter.clear();
 
         int[] x = new int[points.size()];
@@ -82,13 +68,16 @@ public class Controller {
             y[i] = points.get(i).getY();
             painter.drawPoint(x[i], y[i], POINT_RADIUS);
         }
+        // Считаем параметр для каждой точки
+        double[] t = Solver.getParams(x, y);
 
-        Spline[] splines = Solver.getSplines(x, y);
-        for (int i = 0; i < points.size() - 1; i++) {
-            int minX = Math.min(x[i], x[i + 1]);
-            int maxX = Math.max(x[i], x[i + 1]);
-            for (double k = minX; k < maxX; k += 0.05) {
-                painter.putPixel((int) Math.round(k), (int) splines[i].calculate(k));
+        // Сплайны отдельно для х и у
+        Spline[] xSplines = Solver.getSplines(t, x);
+        Spline[] ySplines = Solver.getSplines(t, y);
+
+        for (int i = 0; i < xSplines.length; i++) {
+            for (double p = t[i]; p <= t[i + 1]; p += 0.05) {
+                painter.putPixel((int) xSplines[i].calculate(p), (int) ySplines[i].calculate(p));
             }
         }
     }
