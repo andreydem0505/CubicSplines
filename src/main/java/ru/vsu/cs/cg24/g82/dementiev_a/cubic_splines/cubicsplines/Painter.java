@@ -5,10 +5,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.paint.Color;
 
-public class Painter {
+public class Painter implements PixelDrawer {
     private final Canvas canvas;
     private final GraphicsContext gc;
     private final PixelWriter pw;
+    public static final int POINT_RADIUS = 3;
 
     public Painter(final Canvas canvas) {
         this.canvas = canvas;
@@ -16,6 +17,7 @@ public class Painter {
         pw = gc.getPixelWriter();
     }
 
+    @Override
     public void putPixel(int x, int y) {
         pw.setColor(x, y, Color.BLACK);
     }
@@ -24,7 +26,7 @@ public class Painter {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 
-    public void drawPoint(int x, int y, int radius) {
-        gc.fillOval(x - radius, y - radius, radius * 2, radius * 2);
+    public void drawPoint(int x, int y) {
+        gc.fillOval(x - POINT_RADIUS, y - POINT_RADIUS, POINT_RADIUS * 2, POINT_RADIUS * 2);
     }
 }
