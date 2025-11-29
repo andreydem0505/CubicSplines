@@ -2,7 +2,7 @@ package ru.vsu.cs.cg24.g82.dementiev_a.cubic_splines.cubicsplines;
 
 
 public class Solver {
-    public static Spline[] getSplines(int[] x, int[] f) {
+    public static Spline[] getSplines(double[] x, int[] f) {
         if (x.length < 2)
             return new Spline[0];
 
@@ -39,5 +39,16 @@ public class Solver {
         }
 
         return splines;
+    }
+
+    public static double[] getParams(int[] x, int[] y) {
+        double[] params = new double[x.length];
+        if (params.length == 0) return params;
+
+        params[0] = 0;
+        for (int i = 1; i < params.length; i++) {
+            params[i] = params[i - 1] + Math.sqrt(Math.pow(x[i] - x[i - 1], 2) + Math.pow(y[i] - y[i - 1], 2));
+        }
+        return params;
     }
 }
