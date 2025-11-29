@@ -85,11 +85,5 @@ public class Controller {
         CurveDrawer.drawCurve(painter, points, STEPS[stepPointer], estimator);
 
         text.setText("Computations: " + estimator.getComputations() + "\nTime: " + estimator.getTime() + "ms");
-        Spline[] splines = Solver.getSplines(x, y);
-        for (int i = 0; i < points.size() - 1; i++) {
-            for (double k = x[i]; k < x[i + 1]; k += 0.05) {
-                painter.putPixel((int) Math.round(k), (int) splines[i].calculate(k));
-            }
-        }
     }
 }
